@@ -3,7 +3,7 @@ layout: post
 title: "Cuarteles modelo, Viña San Pedro, Molina, Curicó"
 subtitle: "PCA indicadores de Salud de suelo (SHIP), 0-30 cm"
 author: "David A. Vásquez Stuardo"
-date: "`r Sys.Date()`"
+date: "20 - 01 - 2023"
 ---
 
 Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
