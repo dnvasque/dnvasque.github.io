@@ -3,6 +3,35 @@ layout: post
 title: "CAN"
 ---
 
+```{=html}
+<style>
+body {
+text-align: justify}
+</style>
+```
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+
+\vspace{-1cm}
+
+```{r eval=T, warning=FALSE, include=F}
+library(readxl)
+library(rstatix)
+library(dplyr)
+library(tidyverse)
+library(ggpubr)
+library(gridExtra)
+library(fmsb)
+library(broom)
+library(flextable)
+library(xtable)
+library(pander)
+library(agricolae)
+library(tidyverse)
+library(ggthemes)
+library(multcompView)
+```
+
 ```{r eval=T, warning=FALSE, include=F}
 data <- read.delim(
   "https://gist.githubusercontent.com/dnvasque/6038c07b9f964610474e815887da5755/raw/8dad3d7c9504e18ede81994807782ee93b9ec9c1/CAN_pto_montt")
