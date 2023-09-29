@@ -3,74 +3,244 @@ layout: post
 title: "CAN"
 ---
 
-```{=html}
-<style>
-body {
-text-align: justify}
-</style>
-```
-\renewcommand{\figurename}{Figura}
-\renewcommand{\tablename}{Tabla}
+---
+title: "Publicando con R Markdown"
+author: "David Charte (@fdavidcl)"
+date: "Document Freedom Day - OSL"
+output:
+  beamer_presentation:
+    colortheme: dolphin
+    theme: Dresden
+    template: beamer-template.tex
+compress: yes
+subtitle: Una introducción en R Markdown
+---
 
-\vspace{-1cm}
 
-```{r eval=T, warning=FALSE, include=F}
-library(readxl)
-library(rstatix)
-library(dplyr)
-library(tidyverse)
-library(ggpubr)
-library(gridExtra)
-library(fmsb)
-library(broom)
-library(flextable)
-library(xtable)
-library(pander)
-library(agricolae)
-library(tidyverse)
-library(ggthemes)
-library(multcompView)
-```
+# Introducción
 
-```{r eval=T, warning=FALSE, include=F}
-data <- read.delim(
-  "https://gist.githubusercontent.com/dnvasque/6038c07b9f964610474e815887da5755/raw/8dad3d7c9504e18ede81994807782ee93b9ec9c1/CAN_pto_montt")
-data <- data.frame(data)
-data$Year <- as.factor(data$Year)
-data$Month <- as.factor(data$Month)
-data$mm <- as.numeric(data$mm)
+## Investigación + Programación
+
+### Ciencia reproducible
+
+"En el *dataset* `iris`, podemos ver la relación entre el tamaño
+del pétalo y su especie:"
+
+```{r, echo=F, fig.height=5}
+data(iris)
+plot(Petal.Width ~ Petal.Length, data = iris, col = iris$Species)
 ```
 
-```{r warning=FALSE, include=FALSE}
-CAN.aov <- aov(mm ~ Month, data = data)
-CAN.tukey <- TukeyHSD(CAN.aov)
-cld <- multcompLetters4(CAN.aov, CAN.tukey, reversed = TRUE)
-dt <- group_by(data, Month) %>%
-  summarise(w=mean(mm), sd = sd(mm)) %>%
-  arrange(desc(w))
-cld <- as.data.frame.list(cld$Month)
-dt$cld <- cld$Letters
+---------------
+
+### Programación literaria
+
+"Cargamos el *dataset* `iris`."
+```R
+data(iris)
 ```
 
-```{r echo=FALSE}
-dt$Month = factor(dt$Month, levels = c('Enero', 'Febrero', 'Marzo', 
-                                       'Abril', 'Mayo', 'Junio',
-                                       'Julio', 'Agosto', 'Septiembre',
-                                       'Octubre', 'Noviembre', 'Diciembre'))
-plot <- ggplot(dt, aes(Month, w)) + 
-  geom_bar(stat = "identity", aes(fill = w), show.legend = F) +
-  geom_errorbar(aes(ymin = w-sd, ymax=w+sd), width = 0.2) +
-  labs(x = "", y = "Precipitaciones medias (mm)") +
-  geom_text(aes(label = cld, y = w + sd), vjust = -0.5) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0,400)) +
-  theme_classic() +
-  theme(axis.text = element_text(angle = 45)) +
-  theme(axis.text = element_text(hjust = 1)) +
-  theme(panel.grid.major.y = element_line(color = "grey",
-                                          linewidth = 0.25,
-                                          linetype = 1)) +
-  ggtitle("Identificación de CAN - Pluviometría") +
-  theme(plot.title = element_text(hjust = 0.5))
-
-plot
+"Vamos a representar la longitud del pétalo según
+su ancho, y colorearemos según la especie."
+```R
+plot(Petal.Width ~ Petal.Length, data = iris, 
+  col = iris$Species)
 ```
+
+--------------
+
+> Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on **explaining to humans** what we want the computer to do. 
+
+> -- Donald E. Knuth, Literate Programming, 1984
+
+## Los inicios
+
+### WEB
+
+* Escrito por **Donald E. Knuth** para \TeX
+
+* Genera Pascal compilable
+
+* CWEB genera C
+
+* *TeX: The program*
+
+. . .
+
+![](assets/texception.png)
+
+### noweb
+
+* Escrito por **Norman Ramsey**
+
+* Genera ejecutables de **cualquier lenguaje**
+
+* Permite \TeX, \LaTeX, HTML
+
+## knitr
+
+### knitr
+
+* Programación literaria en R
+
+* Archivos `.Rnw` con \LaTeX
+
+* Chunks `<<nombre, opciones>>=`...`@`
+
+![](assets/rnw.png)
+
+
+# R Markdown
+
+## 
+
+### Supersets de Markdown
+
+* [(PHP) Markdown Extra](https://michelf.ca/projects/php-markdown/extra/)
+* [Kramdown](http://kramdown.gettalong.org/) (y Maruku, Redcarpet...)
+* Pandoc Markdown
+* Python Markdown
+* GitHub flavored Markdown
+* ...
+
+## ¿Qué es R Markdown?
+
+### knitr + Pandoc Markdown
+
+![](assets/rmdsite.png)
+
+## Escribiendo R Markdown
+
+### YAML
+
+~~~
+---
+title: Ejemplo de R Markdown
+author: Alice, Bob
+output: 
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+---
+~~~
+
+### Chunks
+
+\texttt{\`}\texttt{\`}\texttt{\`}\texttt{\{r, echo=FALSE, eval=TRUE\}}  
+`plot(rnorm(20, mean = 10, sd = 3))`  
+\texttt{\`}\texttt{\`}\texttt{\`}
+
+```{r, echo=FALSE, eval=TRUE, fig.height=5}
+plot(rnorm(20, mean = 10, sd = 3))
+```
+
+### Código en línea
+
+R permite insertar valores en una frase:
+
+\texttt{El número e vale \`}\texttt{r exp(1)}\texttt{\`}
+
+El número e vale `r exp(1)`
+
+### Ecuaciones
+
+#### En línea
+
+`Modo matemático en línea: $e^{i\tau} = 1$`  
+Modo matemático en línea: $e^{i\tau} = 1$
+
+. . .
+
+#### En bloque
+
+\columnsbegin
+
+\column{0.5\textwidth}
+
+
+```
+$$D(x)= 
+  \begin{cases}
+    0 & x \in\mathbb Q\\
+    1 & x \notin\mathbb Q
+  \end{cases}$$
+```
+
+\column{0.5\textwidth}
+
+$$D(x)= 
+  \begin{cases}
+    0 & x \in\mathbb Q\\
+    1 & x \notin\mathbb Q
+  \end{cases}$$
+  
+\columnsend
+
+### Bibliografía
+* `bibliography: bibliography.bib` en YAML
+* Referencias con `[@codref]`
+
+### Aplicaciones Shiny
+![](assets/shinyrmd.png)
+
+### Plantillas
+
+* Variable `template` en la caja YAML (o parámetro `--template`)
+
+* Entre `$...$`:
+    * Variables: `$title$`, `$theme$`...
+    * Estructuras de control: `$if(numbersections)$`, `$for(author)$`...
+
+# Markdown y otros lenguajes
+
+## Desde R Markdown
+
+### R Markdown para todo
+
+```{r test-ruby, engine='ruby'}
+puts "Hello world, I'm Ruby #{RUBY_VERSION}!"
+```
+
+. . .
+
+```{r test-py, engine='python'}
+import platform
+print("Hi! I'm Python " + platform.python_version())
+```
+
+. . .
+
+```{r test-o, engine='node'}
+console.log("And I'm Node " + process.versions.node);
+```
+
+### R Markdown para todo
+
+Parámetro `engine` del chunk. Opciones:
+
+  * Rcpp
+  * bash
+  * coffee (CoffeeScript)
+  * ruby
+  * python
+  * haskell
+  * node (JavaScript)
+  * perl
+  * scala
+  * tikz
+  * ...
+
+## Otras herramientas
+
+### Haskell: Pandoc
+
+GHC soporta Haskell literario (`.lhs`)
+
+![](assets/lithaskell.png)
+
+### Python: Pweave
+
+`(sudo) pip install pweave`
+
+![](assets/pweave.png)
