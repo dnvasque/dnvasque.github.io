@@ -112,7 +112,7 @@ hr {
   opacity: 0.25;
 }
 
-h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+h7, .h7, h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-weight: 700;
@@ -135,7 +135,6 @@ h2, .h2 {
 @media (min-width: 1200px) {
   h2, .h2 {
     font-size: 2rem;
-    color: #FFFAF0;
   }
 }
 
@@ -164,6 +163,15 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: 1rem;
+}
+h7, .h7 {
+  font-size: calc(1.275rem + 0.3vw);
+}
+@media (min-width: 1200px) {
+  h7, .h7 {
+    font-size: 1.5rem;
+    color: #FFFAF0;
+  }
 }
 
 p {
