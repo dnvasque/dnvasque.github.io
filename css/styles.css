@@ -135,6 +135,7 @@ h2, .h2 {
 @media (min-width: 1200px) {
   h2, .h2 {
     font-size: 2rem;
+    color: #FFFAF0;
   }
 }
 
@@ -144,7 +145,7 @@ h3, .h3 {
 @media (min-width: 1200px) {
   h3, .h3 {
     font-size: 1.75rem;
-    color: var(--bs-white-rgb);
+    color: #FFFAF0;
   }
 }
 
